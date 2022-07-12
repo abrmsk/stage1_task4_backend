@@ -1,0 +1,67 @@
+#usersTable,
+#usersTable,
+#testing_table {
+  margin: 50px 0 50px 10px;
+}
+#tabulator-lib {
+  display: none;
+}
+.required_fill {
+  border: 1px solid #ff9797;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+.required_fill:focus {
+  outline: none;
+  border-color: #ff1919;
+  box-shadow: 0 0 10px #ff1919;
+}
+.focus_input {
+  border: 1px solid #666666;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+.focus_input:focus {
+  outline: none;
+  border-color: #26bf47;
+  box-shadow: 0 0 10px #26bf47;
+}
+#usersTable_example table,
+#usersTable table {
+  border: 1px solid #000000;
+}
+#usersTable_example table input[type="text"],
+#usersTable table input[type="text"] {
+  width: 100%;
+}
+#usersTable_example table thead,
+#usersTable table thead {
+  background: #d9fff7;
+}
+#usersTable_example table tbody .button_remove,
+#usersTable table tbody .button_remove {
+  background: #f87a7a;
+  color: #d9fff7;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+#usersTable_example table tbody .button_remove:hover,
+#usersTable table tbody .button_remove:hover {
+  opacity: 0.5;
+}
+#usersTable_example table tbody tr:nth-child(odd),
+#usersTable table tbody tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+
+#usersTable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#add_new_record {
+  margin-bottom: 20px;
+}

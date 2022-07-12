@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add & remove data</title>
+</head>
+<body>
+    <input id="input_name" oninput={onChangeInput(this)} value="" placeholder="enter your username (vpupkin)" style="width: 200px;">
+    <button onclick="addDataBackendMethodPost()">fill data</button>
+    <button onclick="delDataBackendMethodPost()">del data</button>
+    <div>
+        <span id="info">process</span>
+    </div>
+
+<script>
+    window.onload = (event) => {
+        const input = document.getElementById('input_name');
+        const username = localStorage.getItem('username_brmsk');
+        input.value = username ? username : '';
+    };
+
+    const onChangeInput = (e) => {
+        localStorage.setItem('username_brmsk', e.value)
+    }
+
+    const getHttp = () => {
+        let username = localStorage.getItem('username_brmsk'); // this is you username, example, vpupkin vproshachenko
+        return username ? `https://mock-api.shpp.me/${username}/users` : '';
+    }
+
+
+    let border = { start: 0, end: 0 };
+    const info = document.getElementById('info');
+
+    const addDataBackendMethodPost = async () => {
+        const http_api = getHttp();
+        if (!http_api) return;
+
+        const result = Object.entries(dataForBackend).map(([, a]) => a)
+        for (let i = 0; i < result.length; i++) {
+            const dat = result[i];
+            const es = {
+                name: dat.name,
+                surname: dat.surname,
+                avatar: dat.avatar,
+                birthday: dat.birthday,
+            }
+
+            info.innerHTML = 'add name: ' + es.name;
+            console.clear();
+            console.log('Add name: ' + es.name);
+
+            await fetch(http_api, {
+                method: 'POST',
+                body: JSON.stringify(es),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    console.log('-response - ', response)
+                })
+                .catch(error => {
+                    console.log(error)
+                });(es);
+        }
+        info.innerHTML = 'Complete';
+        console.log('Complete');
+    }
+
+    const delDataBackendMethodPost = async () => {
+        const http_api = getHttp();
+        if (!http_api) return;
+
+        await fetch(http_api, {
+            'cache-control': "no-cache",
+            'cache': "no-store",
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(res => {
+                const result = Object.entries(res.data).map(([i]) => i)
+                border.start = +result[0]
+                border.end = +result[result.length - 1]
+            })
+
+
+        for (let i = border.start; i < border.end + 1; i++) {
+            info.innerHTML = 'Process delete data: ' + i;
+            console.clear();
+            console.log('Process delete data: ' + i);
+
+            await fetch(http_api + '/' + i   , {
+                method: 'DELETE',
+            })
+        }
+        info.innerHTML = 'Deleted. Complit.';
+        console.log('Deleted. Complit.');
+    }
+
+    const dataForBackend = {
+        "3": {
+            "name": "Jairo",
+            "surname": "Reichert",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/guiiipontes/128.jpg",
+            "birthday": "2020-09-25T22:00:10.356Z",
+            "id": 3
+        },
+        "4": {
+            "name": "Norberto",
+            "surname": "Schamberger",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/roybarberuk/128.jpg",
+            "birthday": "2020-10-13T18:05:46.896Z",
+            "id": 4
+        },
+        "5": {
+            "name": "Donato",
+            "surname": "Tillman",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/gabrielizalo/128.jpg",
+            "birthday": "2021-01-19T16:50:24.233Z",
+            "id": 5
+        },
+        "6": {
+            "name": "Emile",
+            "surname": "O'Keefe",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/pcridesagain/128.jpg",
+            "birthday": "2020-08-04T00:47:46.467Z",
+            "id": 6
+        },
+        "7": {
+            "name": "Carter",
+            "surname": "Bernier",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/chrisslowik/128.jpg",
+            "birthday": "2021-02-10T22:21:57.628Z",
+            "id": 7
+        },
+        "8": {
+            "name": "Hiram",
+            "surname": "Wuckert",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/jjsiii/128.jpg",
+            "birthday": "2020-08-27T01:43:52.068Z",
+            "id": 8
+        },
+        "9": {
+            "name": "Jarrett",
+            "surname": "Simonis",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/badlittleduck/128.jpg",
+            "birthday": "2020-09-09T05:08:50.270Z",
+            "id": 9
+        },
+        "10": {
+            "name": "Tom",
+            "surname": "Russel",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/thaisselenator_/128.jpg",
+            "birthday": "2020-10-26T02:30:40.837Z",
+            "id": 10
+        },
+        "11": {
+            "name": "Marcelina",
+            "surname": "Beer",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/vonachoo/128.jpg",
+            "birthday": "2020-11-04T04:04:42.141Z",
+            "id": 11
+        },
+        "12": {
+            "name": "Matteo",
+            "surname": "Kuphal",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ryanjohnson_me/128.jpg",
+            "birthday": "2020-09-26T13:21:09.380Z",
+            "id": 12
+        },
+        "13": {
+            "name": "Lambert",
+            "surname": "Heller",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/stefanotirloni/128.jpg",
+            "birthday": "2020-06-15T07:05:13.408Z",
+            "id": 13
+        },
+        "15": {
+            "name": "Mae",
+            "surname": "Fay",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/herbigt/128.jpg",
+            "birthday": "2020-08-18T20:21:18.997Z",
+            "id": 15
+        },
+        "16": {
+            "name": "Ryann",
+            "surname": "Conroy",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/elbuscainfo/128.jpg",
+            "birthday": "2021-05-22T21:24:21.453Z",
+            "id": 16
+        },
+        "17": {
+            "name": "Mozelle",
+            "surname": "Schulist",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/kaspernordkvist/128.jpg",
+            "birthday": "2021-02-28T19:30:33.766Z",
+            "id": 17
+        },
+        "18": {
+            "name": "Mohamed",
+            "surname": "Bogisich",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/gu5taf/128.jpg",
+            "birthday": "2020-07-17T06:39:20.930Z",
+            "id": 18
+        },
+        "19": {
+            "name": "Vivian",
+            "surname": "Funk",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/jeremery/128.jpg",
+            "birthday": "2020-09-16T20:05:59.404Z",
+            "id": 19
+        },
+        "21": {
+            "name": "Florine",
+            "surname": "Kassulke",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/imomenui/128.jpg",
+            "birthday": "2020-07-25T19:09:10.172Z",
+            "id": 21
+        },
+        "22": {
+            "name": "Dixie",
+            "surname": "Pfeffer",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ultragex/128.jpg",
+            "birthday": "2021-02-03T22:21:17.012Z",
+            "id": 22
+        },
+        "23": {
+            "name": "Rita",
+            "surname": "Turner",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/fotomagin/128.jpg",
+            "birthday": "2021-01-30T10:34:49.694Z",
+            "id": 23
+        },
+        "24": {
+            "name": "Javonte",
+            "surname": "Powlowski",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/dshster/128.jpg",
+            "birthday": "2021-03-28T04:23:43.704Z",
+            "id": 24
+        },
+        "25": {
+            "name": "Clifford",
+            "surname": "O'Kon",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ernestsemerda/128.jpg",
+            "birthday": "2020-11-27T15:39:45.338Z",
+            "id": 25
+        },
+        "26": {
+            "name": "Reid",
+            "surname": "Kilback",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/iduuck/128.jpg",
+            "birthday": "2020-12-09T19:22:54.562Z",
+            "id": 26
+        },
+        "27": {
+            "name": "Zackery",
+            "surname": "Satterfield",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/thibaut_re/128.jpg",
+            "birthday": "2020-07-12T01:04:37.114Z",
+            "id": 27
+        },
+        "28": {
+            "name": "Eladio",
+            "surname": "Herman",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/michaelbrooksjr/128.jpg",
+            "birthday": "2021-05-30T11:39:59.849Z",
+            "id": 28
+        },
+        "29": {
+            "name": "Lilliana",
+            "surname": "Kovacek",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ahmetalpbalkan/128.jpg",
+            "birthday": "2020-10-12T19:03:47.463Z",
+            "id": 29
+        },
+        "30": {
+            "name": "Alexa",
+            "surname": "Kshlerin",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/karsh/128.jpg",
+            "birthday": "2020-07-21T13:34:35.615Z",
+            "id": 30
+        },
+        "31": {
+            "name": "Yessenia",
+            "surname": "Donnelly",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/keryilmaz/128.jpg",
+            "birthday": "2021-04-14T16:27:19.942Z",
+            "id": 31
+        },
+        "32": {
+            "name": "Sherman",
+            "surname": "Brakus",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/uxward/128.jpg",
+            "birthday": "2021-02-13T00:48:23.734Z",
+            "id": 32
+        },
+        "33": {
+            "name": "Gretchen",
+            "surname": "Labadie",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/murrayswift/128.jpg",
+            "birthday": "2021-01-11T06:51:39.439Z",
+            "id": 33
+        },
+        "34": {
+            "name": "Jarrell",
+            "surname": "Douglas",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/edgarchris99/128.jpg",
+            "birthday": "2020-06-29T19:59:54.735Z",
+            "id": 34
+        },
+        "35": {
+            "name": "Ova",
+            "surname": "Collier",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/emmandenn/128.jpg",
+            "birthday": "2020-10-27T22:40:43.339Z",
+            "id": 35
+        },
+        "36": {
+            "name": "Magnus",
+            "surname": "Roob",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/nicolai_larsen/128.jpg",
+            "birthday": "2020-09-16T18:47:25.901Z",
+            "id": 36
+        },
+        "37": {
+            "name": "Felicia",
+            "surname": "Pagac",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/faisalabid/128.jpg",
+            "birthday": "2020-10-10T23:42:19.519Z",
+            "id": 37
+        },
+        "38": {
+            "name": "Ceasar",
+            "surname": "Ledner",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/koridhandy/128.jpg",
+            "birthday": "2021-04-09T17:32:55.476Z",
+            "id": 38
+        },
+        "39": {
+            "name": "Kelly",
+            "surname": "Jerde",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/haligaliharun/128.jpg",
+            "birthday": "2021-03-30T00:49:48.506Z",
+            "id": 39
+        },
+    };
+</script>
+</body>
+</html>
